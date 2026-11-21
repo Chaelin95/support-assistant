@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kettlewick Help Centre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a calm help centre. Search first, then two lookup tools side by side, then contact. Teal means "do this", amber means "waiting". */
+:root {
+  --bg: #f3f6f7;
+  --surface: #ffffff;
+  --ink: #14212b;
+  --muted: #55646f;
+  --line: #d9e1e5;
+  --accent: #0a6c6a;
+  --accent-ink: #ffffff;
+  --accent-soft: #dff1ef;
+  --warn: #8a5a00;
+  --warn-soft: #fbefd3;
+  --good: #1d6b3a;
+  --good-soft: #def2e4;
+  --bad: #9b2c2c;
+  --bad-soft: #f8e1e1;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0f171c;
+    --surface: #17222a;
+    --ink: #e6eef2;
+    --muted: #9db0bb;
+    --line: #2a3943;
+    --accent: #4fc3bd;
+    --accent-ink: #062321;
+    --accent-soft: #15353a;
+    --warn: #f0c36a;
+    --warn-soft: #3a2f14;
+    --good: #7fd49a;
+    --good-soft: #17341f;
+    --bad: #f19a9a;
+    --bad-soft: #3a1c1c;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f171c;
+  --surface: #17222a;
+  --ink: #e6eef2;
+  --muted: #9db0bb;
+  --line: #2a3943;
+  --accent: #4fc3bd;
+  --accent-ink: #062321;
+  --accent-soft: #15353a;
+  --warn: #f0c36a;
+  --warn-soft: #3a2f14;
+  --good: #7fd49a;
+  --good-soft: #17341f;
+  --bad: #f19a9a;
+  --bad-soft: #3a1c1c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+}
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.05rem; }
+p { margin: 0; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+/* top bar */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; padding-bottom: 14px; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+.brand-mark { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; }
+.brand-mark svg { width: 16px; height: 16px; }
+nav { display: flex; gap: 4px; flex-wrap: wrap; }
+nav a { color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 999px; font-weight: 500; font-size: 0.95rem; }
+nav a:hover { background: var(--accent-soft); color: var(--ink); }
+
+/* hero */
+.hero { padding: 48px 0 28px; }
+.hero p.lead { color: var(--muted); margin-top: 10px; max-width: 56ch; }
+.search { display: flex; gap: 8px; margin-top: 24px; max-width: 640px; }
+.search input { flex: 1; min-width: 0; }
+
+/* form controls */
+label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+input, select, textarea {
+  font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%;
+}
+input::placeholder, textarea::placeholder { color: var(--muted); }
+textarea { resize: vertical; min-height: 96px; }
+button {
+  font: inherit; font-weight: 600; cursor: pointer; border-radius: 10px; padding: 10px 18px;
+  border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink);
+}
+button:hover { filter: brightness(1.08); }
+button.ghost { background: transparent; color: var(--accent); }
+
+/* sections */
+section { padding: 28px 0; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.sec-head .meta { color: var(--muted); font-size: 0.9rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 760px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+/* quick links */
+.quick a { display: block; text-decoration: none; color: var(--ink); height: 100%; }
+.quick a:hover { border-color: var(--accent); }
+.quick .card { height: 100%; }
+.quick p { color: var(--muted); font-size: 0.93rem; margin-top: 4px; }
+.quick .ico { width: 34px; height: 34px; border-radius: 9px; background: var(--accent-soft); display: grid; place-items: center; margin-bottom: 12px; }
+.quick .ico svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* articles */
+.articles { display: grid; gap: 8px; }
+details.article { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+details.article summary { list-style: none; cursor: pointer; padding: 14px 16px; display: flex; gap: 12px; justify-content: space-between; align-items: center; font-weight: 600; }
+details.article summary::-webkit-details-marker { display: none; }
+details.article summary::after { content: "+"; color: var(--accent); font-size: 1.3rem; line-height: 1; }
+details.article[open] summary::after { content: "\2212"; }
+.article-body { padding: 0 16px 16px; color: var(--muted); }
+.article-body .src { margin-top: 10px; font-size: 0.85rem; }
+.tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-right: 8px; }
+.empty { padding: 20px; color: var(--muted); border: 1px dashed var(--line); border-radius: 12px; }
+
+/* status */
+.pill { display: inline-block; font-size: 0.8rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.pill.good { background: var(--good-soft); color: var(--good); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.info { background: var(--accent-soft); color: var(--accent); }
+.result { margin-top: 16px; }
+.result .row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+.err { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--bad-soft); color: var(--bad); font-size: 0.93rem; }
+.steps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 0; }
+.steps li { position: relative; padding: 0 0 14px 26px; color: var(--muted); font-size: 0.93rem; }
+.steps li::before { content: ""; position: absolute; left: 4px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.steps li::after { content: ""; position: absolute; left: 8px; top: 18px; bottom: -2px; width: 2px; background: var(--line); }
+.steps li:last-child::after { display: none; }
+.steps li.done::before { background: var(--accent); }
+.steps li.done { color: var(--ink); }
+.steps li strong { font-weight: 600; }
+.hint { color: var(--muted); font-size: 0.85rem; margin-top: 10px; }
+.field { margin-top: 12px; }
+
+/* assistant placeholder */
+.chat { display: grid; gap: 10px; margin-top: 4px; }
+.bubble { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 0.95rem; }
+.bubble.you { justify-self: end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 4px; }
+.bubble.bot { background: var(--bg); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+.bubble .cite { display: inline-block; margin-top: 6px; font-size: 0.8rem; color: var(--accent); font-weight: 600; }
+.bubble .unsure { display: block; margin-top: 6px; font-size: 0.82rem; color: var(--warn); }
+.handoff { border: 1px solid var(--warn); background: var(--warn-soft); color: var(--ink); border-radius: 12px; padding: 12px 14px; font-size: 0.9rem; }
+.handoff strong { color: var(--warn); }
+.note { background: var(--warn-soft); color: var(--ink); border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; margin-bottom: 14px; }
+
+footer { padding: 28px 0 48px; color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); margin-top: 24px; }
+@media (prefers-reduced-motion: no-preference) {
+  button, nav a, .quick .card { transition: filter .15s, border-color .15s, background .15s; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h10l-1 7H4L3 6z"/><path d="M6 6V4.5A2 2 0 0 1 8 2.5a2 2 0 0 1 2 2V6"/></svg>
+      </span>
+      Kettlewick Help Centre
+    </a>
+    <nav aria-label="Main">
+      <a href="#help">Help articles</a>
+      <a href="#order">Track an order</a>
+      <a href="#ticket">Check a ticket</a>
+      <a href="#assistant">Assistant</a>
+      <a href="#contact">Contact us</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="hero">
+      <h1>How can we help with your order?</h1>
+      <p class="lead">Search our help articles, check where your parcel is, or follow up on a support ticket.</p>
+      <form class="search" id="searchForm" role="search">
+        <div style="flex:1;min-width:0">
+          <label for="q" class="sr" style="position:absolute;left:-9999px">Search help articles</label>
+          <input id="q" type="search" placeholder="Try: return, tracking, password, charged twice" autocomplete="off">
+        </div>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="grid3 quick">
+      <a href="#order"><div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg></div>
+        <h3>Track an order</h3><p>Use your order number and email.</p></div></a>
+      <a href="#ticket"><div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg></div>
+        <h3>Check a ticket</h3><p>See where your request stands.</p></div></a>
+      <a href="#contact"><div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></div>
+        <h3>Talk to a person</h3><p>Weekdays, 9am to 6pm.</p></div></a>
+    </div>
+
+    <section id="help" aria-labelledby="help-h">
+      <div class="sec-head">
+        <h2 id="help-h">Help articles</h2>
+        <span class="meta" id="count" aria-live="polite"></span>
+      </div>
+      <div class="articles" id="articles"></div>
+    </section>
+
+    <section aria-label="Order and ticket lookup">
+      <div class="grid2">
+        <div class="card" id="order">
+          <h2>Track an order</h2>
+          <p class="hint" style="margin-top:6px">Demo data only. Try order 10482 with ana.lim@example.com.</p>
+          <form id="orderForm" novalidate>
+            <div class="field"><label for="orderNo">Order number</label><input id="orderNo" inputmode="numeric" placeholder="e.g. 10482"></div>
+            <div class="field"><label for="orderEmail">Email on the order</label><input id="orderEmail" type="email" placeholder="you@example.com"></div>
+            <div class="field"><button type="submit">Check status</button></div>
+          </form>
+          <div id="orderOut" class="result" aria-live="polite"></div>
+        </div>
+
+        <div class="card" id="ticket">
+          <h2>Check a ticket</h2>
+          <p class="hint" style="margin-top:6px">Demo data only. Try ticket T-2231.</p>
+          <form id="ticketForm" novalidate>
+            <div class="field"><label for="ticketNo">Ticket number</label><input id="ticketNo" placeholder="e.g. T-2231"></div>
+            <div class="field"><button type="submit">Check status</button></div>
+          </form>
+          <div id="ticketOut" class="result" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="assistant" aria-labelledby="as-h">
+      <div class="card">
+        <div class="sec-head">
+          <h2 id="as-h">Ask the assistant</h2>
+          <span class="pill info">Design placeholder</span>
+        </div>
+        <p class="note">Not live yet. This shows where the assistant will sit and the three behaviours it must have: cite a source, say when it is unsure, and hand over to a person.</p>
+        <div class="chat" aria-label="Example conversation">
+          <div class="bubble you">How long do I have to return a sale item?</div>
+          <div class="bubble bot">Sale items can be returned within 14 days of delivery, unused and in original packaging.<br><span class="cite">Source: Returns and refunds (KB-101)</span></div>
+          <div class="bubble you">I was charged twice for order 10482.</div>
+          <div class="bubble bot">I can see one order but I cannot check payments, so I am not sure what happened.<span class="unsure">Low confidence. I will not promise a refund.</span></div>
+          <div class="handoff"><strong>Handing over to a person.</strong> Summary sent to the support team: customer reports a double charge on order 10482. Order status: in transit. No refund promised. Customer asked for a fix.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="ct-h">
+      <div class="card">
+        <h2 id="ct-h">Contact us</h2>
+        <p class="hint" style="margin-top:6px">Demo only. Nothing is sent.</p>
+        <form id="contactForm" novalidate>
+          <div class="grid2">
+            <div class="field"><label for="cName">Your name</label><input id="cName" placeholder="Name"></div>
+            <div class="field"><label for="cTopic">Topic</label>
+              <select id="cTopic"><option>Order</option><option>Return or refund</option><option>Payment</option><option>Account</option><option>Something else</option></select></div>
+          </div>
+          <div class="field"><label for="cMsg">How can we help?</label><textarea id="cMsg" placeholder="Tell us what happened"></textarea></div>
+          <div class="field"><button type="submit">Send message</button></div>
+        </form>
+        <div id="contactOut" aria-live="polite"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">Kettlewick is a fictional store. All orders, tickets, names and articles on this page are made up for a design exercise.</div>
+</footer>
+
+<script>
+// Synthetic data. Later steps replace these with a real knowledge base and a mock API.
+const ARTICLES = [
+  { id: "KB-101", cat: "Returns", title: "Returns and refunds", body: "You can return unused items in original packaging within 30 days of delivery. Sale items have a shorter window of 14 days. Start a return from your order page; refunds go to the original payment method within 5 to 7 working days of us receiving the parcel." },
+  { id: "KB-102", cat: "Shipping", title: "Delivery times and costs", body: "Standard delivery takes 3 to 5 working days and costs $4.90. Orders over $60 ship free. Express delivery takes 1 to 2 working days and costs $12. We do not deliver to PO boxes." },
+  { id: "KB-103", cat: "Orders", title: "Track your order", body: "Once your order ships you get an email with a tracking link. Tracking updates can take up to 24 hours to appear after dispatch. You can also check status on this page with your order number and email." },
+  { id: "KB-104", cat: "Account", title: "Reset your password", body: "Choose Sign in, then Forgot password. We email a reset link that works for 30 minutes. If it does not arrive in 10 minutes, check spam, then request a new one." },
+  { id: "KB-105", cat: "Orders", title: "Change your delivery address", body: "You can change the address until the order moves to Shipped. After that the parcel is with the carrier and we cannot change it. Contact us as early as you can." },
+  { id: "KB-106", cat: "Returns", title: "Item arrived damaged or faulty", body: "Tell us within 7 days of delivery and include a photo. We will send a replacement or refund at no cost to you. Keep the packaging until we confirm." },
+  { id: "KB-107", cat: "Payments", title: "Charged twice or wrong amount", body: "A pending authorisation can look like a second charge and usually drops off within 3 working days. If both charges still show after that, contact us with your order number. Support will review the payment; this page cannot issue refunds." },
+  { id: "KB-108", cat: "Products", title: "Warranty on kitchenware", body: "Kitchenware carries a 2 year warranty against manufacturing faults. It does not cover wear from normal use or damage from misuse. Keep your order confirmation as proof of purchase." }
+];
+
+const ORDERS = {
+  "10482": { email: "ana.lim@example.com", placed: "14 Nov", items: "Stoneware kettle, 2 mugs", total: "$86.40", status: "In transit", tone: "info",
+    steps: [["Order placed","14 Nov",true],["Packed","15 Nov",true],["Shipped with Parcelway","16 Nov",true],["Out for delivery","Expected 24 Nov",false],["Delivered","",false]] },
+  "10391": { email: "ben.ortiz@example.com", placed: "2 Nov", items: "Linen tea towels (set of 4)", total: "$29.00", status: "Delivered", tone: "good",
+    steps: [["Order placed","2 Nov",true],["Packed","3 Nov",true],["Shipped with Parcelway","4 Nov",true],["Out for delivery","7 Nov",true],["Delivered","7 Nov",true]] },
+  "10517": { email: "chloe.tan@example.com", placed: "19 Nov", items: "Cast iron pan", total: "$64.00", status: "Processing", tone: "warn",
+    steps: [["Order placed","19 Nov",true],["Packed","Expected 21 Nov",false],["Shipped","",false],["Delivered","",false]] },
+  "10266": { email: "dev.patel@example.com", placed: "21 Oct", items: "Oak serving board", total: "$42.50", status: "Return in progress", tone: "warn",
+    steps: [["Order placed","21 Oct",true],["Delivered","27 Oct",true],["Return requested","1 Nov",true],["Parcel received by us","Waiting",false],["Refund issued","",false]] }
+};
+
+const TICKETS = {
+  "T-2231": { subject: "Mug arrived with a chipped handle", opened: "17 Nov", status: "Open", tone: "info", updated: "19 Nov", note: "A support agent is reviewing your photo. We aim to reply within 2 working days." },
+  "T-2198": { subject: "Wrong colour tea towels", opened: "9 Nov", status: "Resolved", tone: "good", updated: "12 Nov", note: "Replacement sent on 11 Nov. Reply to the email to reopen this ticket." },
+  "T-2254": { subject: "Refund not received", opened: "20 Nov", status: "Waiting on you", tone: "warn", updated: "20 Nov", note: "We need your order number to continue. Reply to our email with it." }
+};
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function renderArticles(query) {
+  const q = (query || "").trim().toLowerCase();
+  const words = q.split(/\s+/).filter(Boolean);
+  const hits = ARTICLES.filter((a) => {
+    const hay = (a.title + " " + a.body + " " + a.cat).toLowerCase();
+    return words.every((w) => hay.includes(w));
+  });
+  $("count").textContent = q ? hits.length + " of " + ARTICLES.length + " articles" : ARTICLES.length + " articles";
+  $("articles").innerHTML = hits.length
+    ? hits.map((a) => '<details class="article"' + (q && hits.length === 1 ? " open" : "") + '><summary><span><span class="tag">' + esc(a.cat) + "</span>" + esc(a.title) + '</span></summary><div class="article-body"><p>' + esc(a.body) + '</p><p class="src">Article ' + esc(a.id) + "</p></div></details>").join("")
+    : '<div class="empty">No articles match “' + esc(query) + '”. Try a shorter word, or contact us below.</div>';
+}
+
+$("searchForm").addEventListener("submit", (e) => { e.preventDefault(); renderArticles($("q").value); $("help").scrollIntoView({ behavior: "smooth" }); });
+$("q").addEventListener("input", (e) => renderArticles(e.target.value));
+
+$("orderForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const no = $("orderNo").value.trim().replace(/^#/, "");
+  const email = $("orderEmail").value.trim().toLowerCase();
+  const out = $("orderOut");
+  if (!no || !email) { out.innerHTML = '<div class="err">Enter both your order number and the email on the order.</div>'; return; }
+  const o = ORDERS[no];
+  if (!o || o.email !== email) { out.innerHTML = '<div class="err">We could not find an order with that number and email. Check both and try again, or contact us.</div>'; return; }
+  out.innerHTML = '<div class="row"><h3>Order #' + esc(no) + '</h3><span class="pill ' + o.tone + '">' + esc(o.status) + '</span></div>' +
+    '<p class="hint">' + esc(o.items) + " · " + esc(o.total) + " · placed " + esc(o.placed) + "</p>" +
+    '<ol class="steps">' + o.steps.map((s) => '<li class="' + (s[2] ? "done" : "") + '"><strong>' + esc(s[0]) + "</strong>" + (s[1] ? " · " + esc(s[1]) : "") + "</li>").join("") + "</ol>";
+});
+
+$("ticketForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const no = $("ticketNo").value.trim().toUpperCase();
+  const out = $("ticketOut");
+  if (!no) { out.innerHTML = '<div class="err">Enter your ticket number, for example T-2231.</div>'; return; }
+  const t = TICKETS[no];
+  if (!t) { out.innerHTML = '<div class="err">We could not find ticket ' + esc(no) + ". Check the number in your email and try again.</div>"; return; }
+  out.innerHTML = '<div class="row"><h3>' + esc(no) + '</h3><span class="pill ' + t.tone + '">' + esc(t.status) + "</span></div>" +
+    "<p style=\"margin-top:6px\">" + esc(t.subject) + '</p><p class="hint">Opened ' + esc(t.opened) + " · updated " + esc(t.updated) + "</p><p style=\"margin-top:10px\">" + esc(t.note) + "</p>";
+});
+
+$("contactForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = $("cName").value.trim();
+  const msg = $("cMsg").value.trim();
+  $("contactOut").innerHTML = (!msg)
+    ? '<div class="err">Add a short message so we know how to help.</div>'
+    : '<div class="result"><span class="pill good">Demo</span> Thanks' + (name ? ", " + esc(name) : "") + ". In the real portal this would create a ticket. Nothing was sent.</div>";
+});
+
+renderArticles("");
+</script>
+</body>
+</html>
